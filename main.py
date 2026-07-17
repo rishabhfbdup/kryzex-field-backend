@@ -46,36 +46,35 @@ def get_performance(emp_id: str, db: Session = Depends(get_db)):
 def get_all_merchants(db: Session = Depends(get_db)):
     return db.query(models.Merchant).all()
 
+# UPDATED: रोल ऑप्शन के साथ एम्प्लोयी बनाने की API
 @app.post("/create-employee")
-def create_employee(emp_id: str, emp_name: str, password: str, db: Session = Depends(get_db)):
+def create_employee(emp_id: str, emp_name: str, password: str, role: str = "Sales Agent", db: Session = Depends(get_db)):
     existing = db.query(models.Employee).filter(models.Employee.employee_id == emp_id).first()
     if existing: return {"status": "Error", "message": "Employee ID already exists!"}
-    new_emp = models.Employee(employee_id=emp_id, name=emp_name, password=password)
+    new_emp = models.Employee(employee_id=emp_id, name=emp_name, password=password, role=role)
     db.add(new_emp)
     db.commit()
     return {"status": "Success", "message": f"Employee {emp_name} created successfully!"}
 
+# UPDATED: रोल भेजने के लिए लॉगिन API
 @app.post("/employee-login")
 def employee_login(emp_id: str, password: str, db: Session = Depends(get_db)):
     user = db.query(models.Employee).filter(models.Employee.employee_id == emp_id, models.Employee.password == password).first()
-    if user: return {"status": "Success", "emp_name": user.name}
+    if user: return {"status": "Success", "emp_name": user.name, "role": user.role}
     return {"status": "Error", "message": "Galat ID ya Password!"}
 
-# NEW API: सभी एम्प्लोयी की लिस्ट देखने के लिए
 @app.get("/get-all-employees")
 def get_all_employees(db: Session = Depends(get_db)):
     return db.query(models.Employee).all()
 
-# NEW API: एडमिन द्वारा पासवर्ड बदलने के लिए
 @app.post("/change-employee-password")
 def change_password(emp_id: str, new_pass: str, db: Session = Depends(get_db)):
     user = db.query(models.Employee).filter(models.Employee.employee_id == emp_id).first()
     if not user: return {"status": "Error", "message": "Employee not found!"}
     user.password = new_pass
     db.commit()
-    return {"status": "Success", "message": f"Password changed for {emp_id} successfully!"}
+    return {"status": "Success", "message": f"Password changed successfully!"}
 
-# NEW API: मर्चेंट को Approve या Decline करने के लिए
 @app.post("/update-merchant-status")
 def update_status(merchant_id: int, status: str, db: Session = Depends(get_db)):
     merchant = db.query(models.Merchant).filter(models.Merchant.id == merchant_id).first()
@@ -84,3 +83,15 @@ def update_status(merchant_id: int, status: str, db: Session = Depends(get_db)):
     elif status == "Declined": merchant.app_status = models.AppStatusEnum.DECLINED
     db.commit()
     return {"status": "Success", "message": f"Merchant status updated to {status}!"}
+
+# NEW API: एम्प्लोयी डिलीट करने के लिए
+@delete_route := app.post("/delete-employee")
+def delete_employee(emp_id: str, db: Session = Depends(get_db)):
+    user = db.query(models.Employee).filter(models.Employee.employee_id == emp_id).first()
+    if not user: return {"status": "Error", "message": "Employee not found!"}
+    
+    # एम्प्लोयी डिलीट करने से पहले उसकी फॉरेन की एरर से बचने के लिए मर्चेंट्स भी हटा सकते हैं या नल कर सकते हैं
+    db.query(models.Merchant).filter(models.Merchant.onboarded_by_id == emp_id).delete()
+    db.delete(user)
+    db.commit()
+    return {"status": "Success", "message": f"Employee {emp_id} and their data deleted successfully!"}
