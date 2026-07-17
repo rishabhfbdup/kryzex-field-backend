@@ -45,16 +45,29 @@
             </div>
 
             <div id="emp-workspace" class="hidden">
-                <div class="card p-6 mb-6 kryzex-blue text-white">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="text-sky-100 text-xs font-semibold uppercase tracking-wider">Active Agent</p>
-                            <h2 id="display_emp_id" class="text-xl font-bold mt-0.5">KRYZ-XXXX</h2>
-                            <p id="display_emp_name" class="text-xs text-sky-200 mt-0.5"></p>
+                <div class="card p-6 mb-6 bg-white border-2 border-sky-500 shadow-md">
+                    <div class="space-y-3 text-slate-900">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="font-bold text-sm text-slate-500"><i class="fa-solid fa-id-badge text-sky-600 mr-1"></i> Employee ID:</span>
+                            <span id="display_emp_id" class="font-black text-lg bg-sky-100 px-3 py-0.5 rounded-md text-sky-900">KRYZ-XXXX</span>
                         </div>
-                        <div class="text-right">
-                            <p class="text-4xl font-black" id="total_count">0</p>
-                            <p class="text-xs text-sky-100 font-medium">Shops Onboarded</p>
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="font-bold text-sm text-slate-500"><i class="fa-solid fa-user text-sky-600 mr-1"></i> Agent Name:</span>
+                            <span id="display_emp_name" class="font-black text-base">Loading...</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 pt-2 text-center">
+                            <div class="bg-slate-100 p-2 rounded-xl border border-slate-200">
+                                <p class="text-xs font-bold text-slate-500">Total Shops</p>
+                                <p id="total_count" class="text-xl font-black text-slate-900">0</p>
+                            </div>
+                            <div class="bg-amber-50 p-2 rounded-xl border border-amber-200">
+                                <p class="text-xs font-bold text-amber-700">Pending</p>
+                                <p id="pending_count" class="text-xl font-black text-amber-600">0</p>
+                            </div>
+                            <div class="bg-emerald-50 p-2 rounded-xl border border-emerald-200">
+                                <p class="text-xs font-bold text-emerald-700">Approved</p>
+                                <p id="approved_count" class="text-xl font-black text-emerald-600">0</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -62,10 +75,19 @@
                 <div class="card p-6 border border-slate-100">
                     <h3 class="font-bold text-slate-800 text-lg mb-4"><i class="fa-solid fa-store text-sky-600 mr-2"></i> Add New Merchant</h3>
                     <div class="space-y-4">
-                        <input type="text" id="shop_name" placeholder="Shop Name" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50">
-                        <input type="text" id="owner_name" placeholder="Owner Name" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50">
-                        <input type="number" id="mobile" placeholder="Mobile Number" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50">
-                        <textarea id="address" placeholder="Full Address / Location (State, City)" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50 h-24"></textarea>
+                        <input type="text" id="shop_name" placeholder="Shop Name" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50 font-medium">
+                        <input type="text" id="owner_name" placeholder="Owner Name" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50 font-medium">
+                        <input type="number" id="mobile" placeholder="Mobile Number" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50 font-medium">
+                        <textarea id="address" placeholder="Full Address / Location (State, City)" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50 h-24 font-medium"></textarea>
+                        
+                        <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 bg-slate-50 text-center">
+                            <label class="cursor-pointer block">
+                                <i class="fa-solid fa-camera text-2xl text-slate-400 mb-1"></i>
+                                <span class="block text-xs font-bold text-slate-600">Upload Merchant Shop Photo</span>
+                                <input type="file" id="shop_photo" accept="image/*" class="hidden" onchange="previewImage(this)">
+                            </label>
+                            <p id="photo-status" class="text-xs text-emerald-600 font-bold mt-2 hidden"><i class="fa-solid fa-circle-check"></i> Photo Selected</p>
+                        </div>
                         
                         <button onclick="submitData()" id="btn-submit" class="w-full kryzex-blue text-white font-bold py-3.5 rounded-xl hover:bg-sky-700 shadow-md transition">
                             Submit Onboarding Data
@@ -93,16 +115,14 @@
                         <input type="text" id="new-emp-name" placeholder="Employee Name" class="p-3 border rounded-xl focus:outline-sky-500 bg-slate-50">
                         <input type="text" id="new-emp-pass" placeholder="Set Password" class="p-3 border rounded-xl focus:outline-sky-500 bg-slate-50">
                     </div>
-                    <button onclick="createNewEmployee()" class="mt-4 px-6 py-3 kryzex-blue text-white font-bold rounded-xl hover:bg-sky-700 transition shadow-sm w-full">
+                    <button onclick="createNewEmployee()" class="mt-4 px-6 py-3 kryzex-blue text-white font-bold rounded-xl hover:bg-sky-700 transition w-full">
                         Generate & Authorize Employee Access
                     </button>
                 </div>
 
                 <div class="card p-6 border border-slate-100">
                     <div class="flex justify-between items-center mb-6">
-                        <div>
-                            <h2 class="text-2xl font-extrabold text-slate-900"><i class="fa-solid fa-chart-line text-emerald-600 mr-2"></i> Live Company Operations</h2>
-                        </div>
+                        <h2 class="text-2xl font-extrabold text-slate-900"><i class="fa-solid fa-chart-line text-emerald-600 mr-2"></i> Live Company Operations</h2>
                         <button onclick="loadAdminData()" class="px-4 py-2 bg-emerald-600 text-white rounded-xl font-bold text-sm shadow-sm transition">
                             <i class="fa-solid fa-rotate mr-1"></i> Refresh Live Data
                         </button>
@@ -117,7 +137,8 @@
                                     <th class="p-4">Owner Name</th>
                                     <th class="p-4">Mobile</th>
                                     <th class="p-4">Location / Address</th>
-                                    <th class="p-4">Onboarded By (Agent ID)</th>
+                                    <th class="p-4">Shop Photo</th>
+                                    <th class="p-4">Onboarded By</th>
                                 </tr>
                             </thead>
                             <tbody id="merchant-table-body" class="text-slate-700 text-sm divide-y divide-slate-100"></tbody>
@@ -127,11 +148,12 @@
             </div>
         </div>
 
-        <p class="text-center text-slate-400 text-xs mt-12">© 2026 Kryzex Technologies Private Limited | Security Core v3.0</p>
+        <p class="text-center text-slate-400 text-xs mt-12">© 2026 Kryzex Technologies Private Limited | Security Core v4.0</p>
     </div>
 
     <script>
         let loggedInAgentId = "";
+        let base64Photo = "";
 
         function switchRole(role) {
             const fieldTab = document.getElementById('btn-tab-field');
@@ -148,7 +170,18 @@
             }
         }
 
-        // Field Employee Login Function (Fixed code line 137)
+        function previewImage(input) {
+            const file = input.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    base64Photo = e.target.result;
+                    document.getElementById('photo-status').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
         const loginEmployee = async () => {
             const empId = document.getElementById('login-emp-id').value;
             const pass = document.getElementById('login-emp-pass').value;
@@ -164,19 +197,23 @@
                     document.getElementById('emp-auth-box').classList.add('hidden');
                     document.getElementById('emp-workspace').classList.remove('hidden');
                     document.getElementById('display_emp_id').innerText = empId;
-                    document.getElementById('display_emp_name').innerText = "Agent Name: " + result.emp_name;
+                    document.getElementById('display_emp_name').innerText = result.emp_name;
                     
-                    // Fetch performance
-                    const pRes = await fetch(`${window.location.origin}/employee-performance/${empId}`);
-                    const stats = await pRes.json();
-                    document.getElementById('total_count').innerText = stats.total_shops_onboarded;
-                } else {
-                    alert(result.message);
-                }
+                    updateCounts(empId);
+                } else { alert(result.message); }
             } catch(e) { alert("Server Connection Error!"); }
         }
 
-        // Admin: Verify Password
+        async function updateCounts(empId) {
+            try {
+                const pRes = await fetch(`${window.location.origin}/employee-performance/${empId}`);
+                const stats = await pRes.json();
+                document.getElementById('total_count').innerText = stats.total_shops_onboarded;
+                document.getElementById('approved_count').innerText = stats.approved_apps;
+                document.getElementById('pending_count').innerText = stats.pending_apps;
+            } catch(e) {}
+        }
+
         function verifyAdmin() {
             if(document.getElementById('admin-pass').value === 'kryzex2026') {
                 document.getElementById('admin-auth-box').classList.add('hidden');
@@ -185,14 +222,11 @@
             } else { alert("Galat Password!"); }
         }
 
-        // Admin: Create New Employee
         async function createNewEmployee() {
             const id = document.getElementById('new-emp-id').value;
             const name = document.getElementById('new-emp-name').value;
             const pass = document.getElementById('new-emp-pass').value;
-
             if(!id || !name || !pass) { return alert("Sari fields bharna zaroori hai!"); }
-
             try {
                 const res = await fetch(`${window.location.origin}/create-employee?emp_id=${id}&emp_name=${name}&password=${pass}`, { method: 'POST' });
                 const result = await res.json();
@@ -205,15 +239,16 @@
             } catch(e) { alert("Error adding employee!"); }
         }
 
-        // Admin: Load Records
         async function loadAdminData() {
             const tbody = document.getElementById('merchant-table-body');
-            tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">Loading...</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400">Loading...</td></tr>`;
             try {
                 const res = await fetch(`${window.location.origin}/get-all-merchants`);
                 const data = await res.json();
                 tbody.innerHTML = '';
                 data.forEach(m => {
+                    const photoHtml = m.shop_photo_url ? `<button onclick="openPhoto('${m.shop_photo_url}')" class="px-2 py-1 bg-sky-100 text-sky-800 rounded font-bold text-xs"><i class="fa-solid fa-image"></i> View Photo</button>` : `<span class="text-slate-400 text-xs">No Photo</span>`;
+                    
                     tbody.innerHTML += `
                         <tr class="hover:bg-slate-50 transition text-slate-800">
                             <td class="p-4 font-bold">#${m.id}</td>
@@ -221,13 +256,18 @@
                             <td class="p-4">${m.owner_name}</td>
                             <td class="p-4">${m.mobile_number}</td>
                             <td class="p-4">${m.location_address}</td>
-                            <td class="p-4"><span class="px-2 py-1 bg-sky-100 text-sky-800 font-bold rounded text-xs">${m.onboarded_by_id}</span></td>
+                            <td class="p-4">${photoHtml}</td>
+                            <td class="p-4"><span class="px-2 py-1 bg-slate-200 font-bold rounded text-xs">${m.onboarded_by_id}</span></td>
                         </tr>`;
                 });
             } catch (e) {}
         }
 
-        // Field Portal: Submit Merchant Data
+        function openPhoto(url) {
+            const win = window.open();
+            win.document.write(`<img src="${url}" style="max-w-full; height:auto; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.25); margin:20px auto; display:block;">`);
+        }
+
         async function submitData() {
             const btn = document.getElementById('btn-submit');
             const data = {
@@ -235,20 +275,26 @@
                 owner_name: document.getElementById('owner_name').value,
                 mobile_number: document.getElementById('mobile').value,
                 location_address: document.getElementById('address').value,
-                onboarded_by_id: loggedInAgentId
+                onboarded_by_id: loggedInAgentId,
+                shop_photo_url: base64Photo
             };
 
             if(!data.shop_name) { return alert("Shop name zaroori hai!"); }
 
-            btn.innerText = "Syncing with Cloud Database...";
+            btn.innerText = "Uploading to Kryzex Cloud...";
             btn.disabled = true;
 
             try {
-                const response = await fetch(`${window.location.origin}/submit-merchant/?shop_name=${encodeURIComponent(data.shop_name)}&owner_name=${encodeURIComponent(data.owner_name)}&mobile_number=${encodeURIComponent(data.mobile_number)}&location_address=${encodeURIComponent(data.location_address)}&onboarded_by_id=${encodeURIComponent(data.onboarded_by_id)}`, { method: 'POST' });
+                const response = await fetch(`${window.location.origin}/submit-merchant/?shop_name=${encodeURIComponent(data.shop_name)}&owner_name=${encodeURIComponent(data.owner_name)}&mobile_number=${encodeURIComponent(data.mobile_number)}&location_address=${encodeURIComponent(data.location_address)}&onboarded_by_id=${encodeURIComponent(data.onboarded_by_id)}&shop_photo_url=${encodeURIComponent(data.shop_photo_url)}`, { method: 'POST' });
                 const result = await response.json();
                 if(result.status === "Success") {
-                    alert("Shandar! Merchant data uploaded.");
+                    alert("Shandar! Merchant data along with Shop Photo successfully uploaded.");
+                    base64Photo = "";
                     location.reload();
+                } else {
+                    alert(result.message);
+                    btn.innerText = "Submit Onboarding Data";
+                    btn.disabled = false;
                 }
             } catch (error) {
                 alert("Sync Error!");

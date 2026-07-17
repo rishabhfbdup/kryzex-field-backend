@@ -5,7 +5,6 @@ import enum
 
 Base = declarative_base()
 
-# ऐप का स्टेटस ट्रैक करने के लिए Enums
 class AppStatusEnum(str, enum.Enum):
     PENDING = "Pending"
     ACTIVATED = "Activated"
@@ -14,20 +13,19 @@ class PayoutStatusEnum(str, enum.Enum):
     PENDING = "Pending"
     PAID = "Paid"
 
-# 1. Employees Table (स्टाफ रिकॉर्ड और लॉगिन क्रेडेंशियल्स - दोनों एक साथ!)
+# 1. Employees Table
 class Employee(Base):
     __tablename__ = "employees"
 
-    employee_id = Column(String, primary_key=True, index=True) # जैसे: KRYZ-2604 या KRYZ-101
+    employee_id = Column(String, primary_key=True, index=True) 
     name = Column(String, nullable=False)
     role = Column(String, default="Sales Agent")
-    mobile_number = Column(String, unique=True, nullable=True) # नए कर्मचारियों के लिए इसे optional कर दिया है
-    password = Column(String, nullable=False, default="123456") # लॉगिन पासवर्ड (डिफ़ॉल्ट 123456)
+    mobile_number = Column(String, nullable=True)
+    password = Column(String, nullable=False, default="123456")
     
-    # इस एम्प्लॉई ने जितने मर्चेंट जोड़े, उनकी लिस्ट यहाँ से ट्रैक होगी
     merchants = relationship("Merchant", back_populates="onboarded_by")
 
-# 2. Merchants Table (दुकानदारों का रिकॉर्ड)
+# 2. Merchants Table (इसमें फोटो का कॉलम जोड़ दिया है)
 class Merchant(Base):
     __tablename__ = "merchants"
 
@@ -36,16 +34,12 @@ class Merchant(Base):
     owner_name = Column(String, nullable=False)
     mobile_number = Column(String, nullable=False)
     location_address = Column(String, nullable=False)
+    shop_photo_url = Column(String, nullable=True) # दुकान की फोटो का लिंक सुरक्षित करने के लिए
     
-    # फॉरेन की (Foreign Key) - जो एम्प्लॉई आईडी से लिंक है
     onboarded_by_id = Column(String, ForeignKey("employees.employee_id"), nullable=False)
     
-    # स्टेटस ट्रैकिंग
     app_status = Column(Enum(AppStatusEnum), default=AppStatusEnum.PENDING)
     payout_status = Column(Enum(PayoutStatusEnum), default=PayoutStatusEnum.PENDING)
     
-    # डेटा एंट्री का समय
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
-
-    # रिलेशनशिप मैपिंग
     onboarded_by = relationship("Employee", back_populates="merchants")
