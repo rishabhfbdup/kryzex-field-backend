@@ -8,6 +8,7 @@ Base = declarative_base()
 class AppStatusEnum(str, enum.Enum):
     PENDING = "Pending"
     ACTIVATED = "Activated"
+    DECLINED = "Declined" # नया स्टेटस रिजेक्शन के लिए
 
 class PayoutStatusEnum(str, enum.Enum):
     PENDING = "Pending"
@@ -17,7 +18,7 @@ class PayoutStatusEnum(str, enum.Enum):
 class Employee(Base):
     __tablename__ = "employees"
 
-    employee_id = Column(String, primary_key=True, index=True) 
+    employee_id = Column(String, primary_key=True, index=True)
     name = Column(String, nullable=False)
     role = Column(String, default="Sales Agent")
     mobile_number = Column(String, nullable=True)
@@ -25,7 +26,7 @@ class Employee(Base):
     
     merchants = relationship("Merchant", back_populates="onboarded_by")
 
-# 2. Merchants Table (इसमें फोटो का कॉलम जोड़ दिया है)
+# 2. Merchants Table
 class Merchant(Base):
     __tablename__ = "merchants"
 
@@ -34,7 +35,7 @@ class Merchant(Base):
     owner_name = Column(String, nullable=False)
     mobile_number = Column(String, nullable=False)
     location_address = Column(String, nullable=False)
-    shop_photo_url = Column(String, nullable=True) # दुकान की फोटो का लिंक सुरक्षित करने के लिए
+    shop_photo_url = Column(String, nullable=True)
     
     onboarded_by_id = Column(String, ForeignKey("employees.employee_id"), nullable=False)
     

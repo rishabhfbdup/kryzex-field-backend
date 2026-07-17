@@ -36,8 +36,8 @@
                 <h3 class="text-lg font-bold text-slate-800 mb-1">Field Agent Identity</h3>
                 <p class="text-slate-500 text-xs mb-4">Log in using the credentials provided by company admin.</p>
                 <div class="space-y-3">
-                    <input type="text" id="login-emp-id" placeholder="Employee ID (e.g., KRYZ-101)" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50 font-bold text-center">
-                    <input type="password" id="login-emp-pass" placeholder="Enter Your Password" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50 text-center">
+                    <input type="text" id="login-emp-id" placeholder="Employee ID (e.g., KRYZ-101)" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-center text-slate-900">
+                    <input type="password" id="login-emp-pass" placeholder="Enter Your Password" class="w-full p-3 border rounded-xl bg-slate-50 text-center text-slate-900">
                     <button onclick="loginEmployee()" class="w-full kryzex-blue text-white font-bold py-3 rounded-xl hover:bg-sky-700 transition shadow-md">
                         Verify & Open Workspace
                     </button>
@@ -48,25 +48,25 @@
                 <div class="card p-6 mb-6 bg-white border-2 border-sky-500 shadow-md">
                     <div class="space-y-3 text-slate-900">
                         <div class="flex justify-between items-center border-b pb-2">
-                            <span class="font-bold text-sm text-slate-500"><i class="fa-solid fa-id-badge text-sky-600 mr-1"></i> Employee ID:</span>
+                            <span class="font-bold text-sm text-slate-600"><i class="fa-solid fa-id-badge text-sky-600 mr-1"></i> Employee ID:</span>
                             <span id="display_emp_id" class="font-black text-lg bg-sky-100 px-3 py-0.5 rounded-md text-sky-900">KRYZ-XXXX</span>
                         </div>
                         <div class="flex justify-between items-center border-b pb-2">
-                            <span class="font-bold text-sm text-slate-500"><i class="fa-solid fa-user text-sky-600 mr-1"></i> Agent Name:</span>
-                            <span id="display_emp_name" class="font-black text-base">Loading...</span>
+                            <span class="font-bold text-sm text-slate-600"><i class="fa-solid fa-user text-sky-600 mr-1"></i> Agent Name:</span>
+                            <span id="display_emp_name" class="font-black text-base text-slate-900">Loading...</span>
                         </div>
                         <div class="grid grid-cols-3 gap-2 pt-2 text-center">
                             <div class="bg-slate-100 p-2 rounded-xl border border-slate-200">
-                                <p class="text-xs font-bold text-slate-500">Total Shops</p>
+                                <p class="text-xs font-bold text-slate-600">Total Shops</p>
                                 <p id="total_count" class="text-xl font-black text-slate-900">0</p>
                             </div>
                             <div class="bg-amber-50 p-2 rounded-xl border border-amber-200">
-                                <p class="text-xs font-bold text-amber-700">Pending</p>
-                                <p id="pending_count" class="text-xl font-black text-amber-600">0</p>
+                                <p class="text-xs font-bold text-amber-800">Pending</p>
+                                <p id="pending_count" class="text-xl font-black text-amber-700">0</p>
                             </div>
                             <div class="bg-emerald-50 p-2 rounded-xl border border-emerald-200">
-                                <p class="text-xs font-bold text-emerald-700">Approved</p>
-                                <p id="approved_count" class="text-xl font-black text-emerald-600">0</p>
+                                <p class="text-xs font-bold text-emerald-800">Approved</p>
+                                <p id="approved_count" class="text-xl font-black text-emerald-700">0</p>
                             </div>
                         </div>
                     </div>
@@ -75,21 +75,21 @@
                 <div class="card p-6 border border-slate-100">
                     <h3 class="font-bold text-slate-800 text-lg mb-4"><i class="fa-solid fa-store text-sky-600 mr-2"></i> Add New Merchant</h3>
                     <div class="space-y-4">
-                        <input type="text" id="shop_name" placeholder="Shop Name" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50 font-medium">
-                        <input type="text" id="owner_name" placeholder="Owner Name" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50 font-medium">
-                        <input type="number" id="mobile" placeholder="Mobile Number" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50 font-medium">
-                        <textarea id="address" placeholder="Full Address / Location (State, City)" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50 h-24 font-medium"></textarea>
+                        <input type="text" id="shop_name" placeholder="Shop Name" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900">
+                        <input type="text" id="owner_name" placeholder="Owner Name" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900">
+                        <input type="number" id="mobile" placeholder="Mobile Number" class="w-full p-3 border rounded-xl bg-slate-50 font-bold text-slate-900">
+                        <textarea id="address" placeholder="Full Address / Location (State, City)" class="w-full p-3 border rounded-xl bg-slate-50 h-24 font-bold text-slate-900"></textarea>
                         
                         <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 bg-slate-50 text-center">
                             <label class="cursor-pointer block">
-                                <i class="fa-solid fa-camera text-2xl text-slate-400 mb-1"></i>
-                                <span class="block text-xs font-bold text-slate-600">Upload Merchant Shop Photo</span>
+                                <i class="fa-solid fa-camera text-2xl text-slate-500 mb-1"></i>
+                                <span class="block text-xs font-black text-slate-700">Upload Merchant Shop Photo</span>
                                 <input type="file" id="shop_photo" accept="image/*" class="hidden" onchange="previewImage(this)">
                             </label>
-                            <p id="photo-status" class="text-xs text-emerald-600 font-bold mt-2 hidden"><i class="fa-solid fa-circle-check"></i> Photo Selected</p>
+                            <p id="photo-status" class="text-xs text-emerald-700 font-black mt-2 hidden"><i class="fa-solid fa-circle-check"></i> Photo Selected Successfully</p>
                         </div>
                         
-                        <button onclick="submitData()" id="btn-submit" class="w-full kryzex-blue text-white font-bold py-3.5 rounded-xl hover:bg-sky-700 shadow-md transition">
+                        <button onclick="submitData()" id="btn-submit" class="w-full kryzex-blue text-white font-bold py-3.5 rounded-xl hover:bg-sky-700 transition">
                             Submit Onboarding Data
                         </button>
                     </div>
@@ -101,54 +101,84 @@
             <div id="admin-auth-box" class="max-w-md mx-auto card p-6 border text-center">
                 <i class="fa-solid fa-lock text-4xl text-slate-400 mb-3"></i>
                 <h3 class="text-lg font-bold text-slate-800 mb-2">Company Security Authentication</h3>
-                <input type="password" id="admin-pass" placeholder="Enter Company Password" class="w-full p-3 border rounded-xl text-center mb-4 focus:outline-slate-800 bg-slate-50 font-bold tracking-widest">
+                <input type="password" id="admin-pass" placeholder="Enter Company Password" class="w-full p-3 border rounded-xl text-center mb-4 bg-slate-50 font-bold tracking-widest text-slate-900">
                 <button onclick="verifyAdmin()" class="w-full kryzex-dark text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition shadow-md">
                     Access Master Dashboard
                 </button>
             </div>
 
             <div id="admin-dashboard" class="hidden space-y-8">
-                <div class="card p-6 border border-slate-100 max-w-xl mx-auto">
-                    <h3 class="font-bold text-slate-800 text-lg mb-4"><i class="fa-solid fa-user-plus text-sky-600 mr-2"></i> Create Field Employee Credentials</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <input type="text" id="new-emp-id" placeholder="ID (KRYZ-101)" class="p-3 border rounded-xl focus:outline-sky-500 bg-slate-50 font-bold text-center">
-                        <input type="text" id="new-emp-name" placeholder="Employee Name" class="p-3 border rounded-xl focus:outline-sky-500 bg-slate-50">
-                        <input type="text" id="new-emp-pass" placeholder="Set Password" class="p-3 border rounded-xl focus:outline-sky-500 bg-slate-50">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="card p-5 border border-slate-200 bg-white">
+                        <h4 class="text-sm font-bold text-slate-500 uppercase"><i class="fa-solid fa-users text-sky-600 mr-1"></i> Registered Network Strength</h4>
+                        <p id="admin-total-emp" class="text-3xl font-black text-slate-900 mt-1">0 Active Agents</p>
                     </div>
-                    <button onclick="createNewEmployee()" class="mt-4 px-6 py-3 kryzex-blue text-white font-bold rounded-xl hover:bg-sky-700 transition w-full">
-                        Generate & Authorize Employee Access
-                    </button>
+                </div>
+
+                <div class="card p-6 border border-slate-100 max-w-xl mx-auto">
+                    <h3 class="font-bold text-slate-800 text-lg mb-4"><i class="fa-solid fa-user-plus text-sky-600 mr-2"></i> Create or Change Agent Password</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <input type="text" id="new-emp-id" placeholder="ID (KRYZ-101)" class="p-3 border rounded-xl bg-slate-50 font-bold text-center text-slate-900">
+                        <input type="text" id="new-emp-name" placeholder="Name (Skip for Reset)" class="p-3 border rounded-xl bg-slate-50 font-bold text-slate-900">
+                        <input type="text" id="new-emp-pass" placeholder="Password / New Pass" class="p-3 border rounded-xl bg-slate-50 font-bold text-slate-900">
+                    </div>
+                    <div class="flex gap-3 mt-4">
+                        <button onclick="createNewEmployee()" class="px-4 py-3 bg-sky-600 text-white font-bold rounded-xl hover:bg-sky-700 transition w-full text-sm">
+                            Create New Access
+                        </button>
+                        <button onclick="resetPassword()" class="px-4 py-3 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition w-full text-sm">
+                            Update/Reset Password
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card p-6 border border-slate-100">
+                    <h3 class="text-xl font-extrabold text-slate-900 mb-4"><i class="fa-solid fa-address-book text-sky-600 mr-2"></i> Employee Access Directory</h3>
+                    <div class="overflow-x-auto rounded-xl border">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-800 text-white text-sm font-semibold">
+                                    <th class="p-4">Employee ID</th>
+                                    <th class="p-4">Employee Name</th>
+                                    <th class="p-4">Active Login Password</th>
+                                    <th class="p-4">Designated Role</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employee-table-body" class="text-slate-900 text-sm divide-y font-medium"></tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div class="card p-6 border border-slate-100">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-extrabold text-slate-900"><i class="fa-solid fa-chart-line text-emerald-600 mr-2"></i> Live Company Operations</h2>
+                        <h2 class="text-xl font-extrabold text-slate-900"><i class="fa-solid fa-chart-line text-emerald-600 mr-2"></i> Merchant Onboarding Verification Logs</h2>
                         <button onclick="loadAdminData()" class="px-4 py-2 bg-emerald-600 text-white rounded-xl font-bold text-sm shadow-sm transition">
-                            <i class="fa-solid fa-rotate mr-1"></i> Refresh Live Data
+                            <i class="fa-solid fa-rotate mr-1"></i> Refresh Live Records
                         </button>
                     </div>
 
-                    <div class="overflow-x-auto rounded-xl border border-slate-100">
+                    <div class="overflow-x-auto rounded-xl border">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="bg-slate-900 text-white text-sm font-semibold">
                                     <th class="p-4">ID</th>
                                     <th class="p-4">Shop Name</th>
-                                    <th class="p-4">Owner Name</th>
-                                    <th class="p-4">Mobile</th>
-                                    <th class="p-4">Location / Address</th>
+                                    <th class="p-4">Owner / Mobile</th>
+                                    <th class="p-4">Location</th>
                                     <th class="p-4">Shop Photo</th>
-                                    <th class="p-4">Onboarded By</th>
+                                    <th class="p-4">Agent ID</th>
+                                    <th class="p-4">Status</th>
+                                    <th class="p-4 text-center">Verification Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="merchant-table-body" class="text-slate-700 text-sm divide-y divide-slate-100"></tbody>
+                            <tbody id="merchant-table-body" class="text-slate-900 text-sm divide-y font-medium"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
 
-        <p class="text-center text-slate-400 text-xs mt-12">© 2026 Kryzex Technologies Private Limited | Security Core v4.0</p>
+        <p class="text-center text-slate-400 text-xs mt-12">© 2026 Kryzex Technologies Private Limited | Core v5.0 Master Control</p>
     </div>
 
     <script>
@@ -156,11 +186,11 @@
         let base64Photo = "";
 
         function switchRole(role) {
-            const fieldTab = document.getElementById('btn-tab-field');
-            const companyTab = document.getElementById('btn-tab-company');
             document.getElementById('field-portal-section').style.display = role === 'field' ? 'block' : 'none';
             document.getElementById('company-portal-section').style.display = role === 'company' ? 'block' : 'none';
             
+            const fieldTab = document.getElementById('btn-tab-field');
+            const companyTab = document.getElementById('btn-tab-company');
             if(role === 'field') {
                 fieldTab.className = "px-5 py-2.5 rounded-full font-bold text-sm shadow-sm kryzex-blue text-white transition-all";
                 companyTab.className = "px-5 py-2.5 rounded-full font-bold text-sm shadow-sm bg-slate-300 text-slate-700 transition-all";
@@ -185,20 +215,16 @@
         const loginEmployee = async () => {
             const empId = document.getElementById('login-emp-id').value;
             const pass = document.getElementById('login-emp-pass').value;
-
             if(!empId || !pass) { return alert("Please fill ID and Password!"); }
-
             try {
-                const res = await fetch(`${window.location.origin}/employee-login?emp_id=${empId}&password=${pass}`, { method: 'POST' });
+                const res = await fetch(`${window.location.origin}/employee-login?emp_id=${encodeURIComponent(empId)}&password=${encodeURIComponent(pass)}`, { method: 'POST' });
                 const result = await res.json();
-
                 if(result.status === "Success") {
                     loggedInAgentId = empId;
                     document.getElementById('emp-auth-box').classList.add('hidden');
                     document.getElementById('emp-workspace').classList.remove('hidden');
                     document.getElementById('display_emp_id').innerText = empId;
                     document.getElementById('display_emp_name').innerText = result.emp_name;
-                    
                     updateCounts(empId);
                 } else { alert(result.message); }
             } catch(e) { alert("Server Connection Error!"); }
@@ -228,20 +254,56 @@
             const pass = document.getElementById('new-emp-pass').value;
             if(!id || !name || !pass) { return alert("Sari fields bharna zaroori hai!"); }
             try {
-                const res = await fetch(`${window.location.origin}/create-employee?emp_id=${id}&emp_name=${name}&password=${pass}`, { method: 'POST' });
+                const res = await fetch(`${window.location.origin}/create-employee?emp_id=${encodeURIComponent(id)}&emp_name=${encodeURIComponent(name)}&password=${encodeURIComponent(pass)}`, { method: 'POST' });
                 const result = await res.json();
                 alert(result.message);
-                if(result.status === "Success") {
-                    document.getElementById('new-emp-id').value = '';
-                    document.getElementById('new-emp-name').value = '';
-                    document.getElementById('new-emp-pass').value = '';
-                }
+                loadAdminData();
             } catch(e) { alert("Error adding employee!"); }
         }
 
+        async function resetPassword() {
+            const id = document.getElementById('new-emp-id').value;
+            const pass = document.getElementById('new-emp-pass').value;
+            if(!id || !pass) { return alert("Employee ID aur New Password bharna zaroori hai!"); }
+            try {
+                const res = await fetch(`${window.location.origin}/change-employee-password?emp_id=${encodeURIComponent(id)}&new_pass=${encodeURIComponent(pass)}`, { method: 'POST' });
+                const result = await res.json();
+                alert(result.message);
+                loadAdminData();
+            } catch(e) { alert("Error updating password!"); }
+        }
+
+        async function updateMerchantStatus(id, action) {
+            try {
+                const res = await fetch(`${window.location.origin}/update-merchant-status?merchant_id=${id}&status=${action}`, { method: 'POST' });
+                const result = await res.json();
+                alert(result.message);
+                loadAdminData();
+            } catch(e) { alert("Status sync failed!"); }
+        }
+
         async function loadAdminData() {
+            // Load Employees Directory Table
+            const empTbody = document.getElementById('employee-table-body');
+            try {
+                const empRes = await fetch(`${window.location.origin}/get-all-employees`);
+                const emps = await empRes.json();
+                empTbody.innerHTML = '';
+                document.getElementById('admin-total-emp').innerText = emps.length + " Active Agents";
+                emps.forEach(e => {
+                    empTbody.innerHTML += `
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="p-4 font-black text-sky-800">${e.employee_id}</td>
+                            <td class="p-4">${e.name}</td>
+                            <td class="p-4 font-mono bg-slate-50 text-slate-700 tracking-wider">${e.password}</td>
+                            <td class="p-4 text-xs font-bold text-slate-500">${e.role}</td>
+                        </tr>`;
+                });
+            } catch(e) {}
+
+            // Load Merchants Table with Approval Controls
             const tbody = document.getElementById('merchant-table-body');
-            tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400">Loading...</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400">Loading Operations Data...</td></tr>`;
             try {
                 const res = await fetch(`${window.location.origin}/get-all-merchants`);
                 const data = await res.json();
@@ -249,15 +311,23 @@
                 data.forEach(m => {
                     const photoHtml = m.shop_photo_url ? `<button onclick="openPhoto('${m.shop_photo_url}')" class="px-2 py-1 bg-sky-100 text-sky-800 rounded font-bold text-xs"><i class="fa-solid fa-image"></i> View Photo</button>` : `<span class="text-slate-400 text-xs">No Photo</span>`;
                     
+                    let badgeColor = "bg-amber-100 text-amber-800";
+                    if(m.app_status === "Activated") badgeColor = "bg-emerald-100 text-emerald-800";
+                    if(m.app_status === "Declined") badgeColor = "bg-rose-100 text-rose-800";
+
                     tbody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition text-slate-800">
+                        <tr class="hover:bg-slate-50 transition">
                             <td class="p-4 font-bold">#${m.id}</td>
                             <td class="p-4 font-bold text-sky-900">${m.shop_name}</td>
-                            <td class="p-4">${m.owner_name}</td>
-                            <td class="p-4">${m.mobile_number}</td>
-                            <td class="p-4">${m.location_address}</td>
+                            <td class="p-4">${m.owner_name}<br><span class="text-xs text-slate-500">${m.mobile_number}</span></td>
+                            <td class="p-4 max-w-xs truncate">${m.location_address}</td>
                             <td class="p-4">${photoHtml}</td>
-                            <td class="p-4"><span class="px-2 py-1 bg-slate-200 font-bold rounded text-xs">${m.onboarded_by_id}</span></td>
+                            <td class="p-4"><span class="px-2 py-0.5 bg-slate-100 font-bold rounded text-xs">${m.onboarded_by_id}</span></td>
+                            <td class="p-4"><span class="px-2.5 py-1 ${badgeColor} font-black rounded-md text-xs">${m.app_status}</span></td>
+                            <td class="p-4 text-center space-x-2">
+                                <button onclick="updateMerchantStatus(${m.id}, 'Approved')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded text-xs transition shadow-xs"><i class="fa-solid fa-check"></i> Approve</button>
+                                <button onclick="updateMerchantStatus(${m.id}, 'Declined')" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded text-xs transition shadow-xs"><i class="fa-solid fa-xmark"></i> Decline</button>
+                            </td>
                         </tr>`;
                 });
             } catch (e) {}
@@ -265,7 +335,7 @@
 
         function openPhoto(url) {
             const win = window.open();
-            win.document.write(`<img src="${url}" style="max-w-full; height:auto; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.25); margin:20px auto; display:block;">`);
+            win.document.write(`<img src="${url}" style="max-width:100%; height:auto; border-radius:12px; margin:25px auto; display:block;">`);
         }
 
         async function submitData() {
@@ -280,15 +350,14 @@
             };
 
             if(!data.shop_name) { return alert("Shop name zaroori hai!"); }
-
-            btn.innerText = "Uploading to Kryzex Cloud...";
+            btn.innerText = "Syncing with Kryzex Cloud Network...";
             btn.disabled = true;
 
             try {
                 const response = await fetch(`${window.location.origin}/submit-merchant/?shop_name=${encodeURIComponent(data.shop_name)}&owner_name=${encodeURIComponent(data.owner_name)}&mobile_number=${encodeURIComponent(data.mobile_number)}&location_address=${encodeURIComponent(data.location_address)}&onboarded_by_id=${encodeURIComponent(data.onboarded_by_id)}&shop_photo_url=${encodeURIComponent(data.shop_photo_url)}`, { method: 'POST' });
                 const result = await response.json();
                 if(result.status === "Success") {
-                    alert("Shandar! Merchant data along with Shop Photo successfully uploaded.");
+                    alert("Shandar! Merchant data uploaded for admin verification.");
                     base64Photo = "";
                     location.reload();
                 } else {
