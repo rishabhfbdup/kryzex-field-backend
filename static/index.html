@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kryzex - Business Management Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #f1f5f9; font-family: 'Segoe UI', sans-serif; }
+        .kryzex-blue { background-color: #0284c7; }
+        .kryzex-dark { background-color: #0f172a; }
+        .card { background: white; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-black text-slate-900 tracking-tight">Kryzex <span class="text-sky-600">Technologies</span></h1>
+            <p class="text-slate-500 font-medium mt-1">Enterprise Operations & Field Portal</p>
+            
+            <div class="flex justify-center gap-4 mt-6">
+                <button onclick="switchRole('field')" id="btn-tab-field" class="px-5 py-2.5 rounded-full font-bold text-sm shadow-sm kryzex-blue text-white transition-all">
+                    <i class="fa-solid fa-users-gear mr-2"></i> Field Employee Portal
+                </button>
+                <button onclick="switchRole('company')" id="btn-tab-company" class="px-5 py-2.5 rounded-full font-bold text-sm shadow-sm bg-slate-300 text-slate-700 hover:bg-slate-400 transition-all">
+                    <i class="fa-solid fa-building-shield mr-2"></i> Company Admin Login
+                </button>
+            </div>
+        </div>
+
+        <div id="field-portal-section" class="max-w-md mx-auto block">
+            <div class="card p-6 mb-6 kryzex-blue text-white">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sky-100 text-xs font-semibold uppercase tracking-wider">Active Field Agent</p>
+                        <h2 id="display_emp_id" class="text-xl font-bold mt-0.5">KRYZ-XXXX</h2>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-4xl font-black" id="total_count">0</p>
+                        <p class="text-xs text-sky-100 font-medium">Shops Onboarded</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-6 border border-slate-100">
+                <h3 class="font-bold text-slate-800 text-lg mb-4"><i class="fa-solid fa-store text-sky-600 mr-2"></i> Add New Merchant</h3>
+                <div class="space-y-4">
+                    <input type="text" id="shop_name" placeholder="Shop Name" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50">
+                    <input type="text" id="owner_name" placeholder="Owner Name" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50">
+                    <input type="number" id="mobile" placeholder="Mobile Number" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50">
+                    <textarea id="address" placeholder="Full Address / Location (State, City)" class="w-full p-3 border rounded-xl focus:outline-sky-500 bg-slate-50 h-24"></textarea>
+                    <input type="text" id="emp_id" placeholder="Enter Your Employee ID to Sync" class="w-full p-3 border border-sky-200 rounded-xl bg-sky-50/50 font-bold text-sky-800 placeholder-sky-400 focus:outline-sky-500">
+                    
+                    <button onclick="submitData()" id="btn-submit" class="w-full kryzex-blue text-white font-bold py-3.5 rounded-xl hover:bg-sky-700 shadow-md shadow-sky-200 transition">
+                        Submit Onboarding Data
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="company-portal-section" class="hidden">
+            <div id="admin-auth-box" class="max-w-md mx-auto card p-6 border text-center">
+                <i class="fa-solid fa-lock text-4xl text-slate-400 mb-3"></i>
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Company Security Authentication</h3>
+                <p class="text-slate-500 text-sm mb-4">Enter master password to access pan-India operational data.</p>
+                <input type="password" id="admin-pass" placeholder="Enter Company Password" class="w-full p-3 border rounded-xl text-center mb-4 focus:outline-slate-800 bg-slate-50 font-bold tracking-widest">
+                <button onclick="verifyAdmin()" class="w-full kryzex-dark text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition shadow-md">
+                    Access Master Dashboard
+                </button>
+            </div>
+
+            <div id="admin-dashboard" class="hidden card p-6 border border-slate-100">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-slate-900"><i class="fa-solid fa-chart-line text-emerald-600 mr-2"></i> Live Company Operations</h2>
+                        <p class="text-slate-500 text-sm">Real-time merchant onboarding logs across all states.</p>
+                    </div>
+                    <button onclick="loadAdminData()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm shadow-sm transition">
+                        <i class="fa-solid fa-rotate mr-1"></i> Refresh Live Data
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-slate-100">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-900 text-white text-sm font-semibold">
+                                <th class="p-4">ID</th>
+                                <th class="p-4">Shop Name</th>
+                                <th class="p-4">Owner Name</th>
+                                <th class="p-4">Mobile</th>
+                                <th class="p-4">Location / Address</th>
+                                <th class="p-4">Onboarded By (Agent)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="merchant-table-body" class="text-slate-700 text-sm divide-y divide-slate-100">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-center text-slate-400 text-xs mt-12">© 2026 Kryzex Technologies Private Limited | Core Infrastructure v2.0</p>
+    </div>
+
+    <script>
+        // Switch between Field Employee and Company Admin Tabs
+        function switchRole(role) {
+            const fieldTab = document.getElementById('btn-tab-field');
+            const companyTab = document.getElementById('btn-tab-company');
+            const fieldSection = document.getElementById('field-portal-section');
+            const companySection = document.getElementById('company-portal-section');
+
+            if(role === 'field') {
+                fieldTab.className = "px-5 py-2.5 rounded-full font-bold text-sm shadow-sm kryzex-blue text-white transition-all";
+                companyTab.className = "px-5 py-2.5 rounded-full font-bold text-sm shadow-sm bg-slate-300 text-slate-700 hover:bg-slate-400 transition-all";
+                fieldSection.classList.replace('hidden', 'block');
+                companySection.classList.replace('block', 'hidden');
+            } else {
+                companyTab.className = "px-5 py-2.5 rounded-full font-bold text-sm shadow-sm kryzex-dark text-white transition-all";
+                fieldTab.className = "px-5 py-2.5 rounded-full font-bold text-sm shadow-sm bg-slate-300 text-slate-700 hover:bg-slate-400 transition-all";
+                fieldSection.classList.replace('block', 'hidden');
+                companySection.classList.replace('hidden', 'block');
+            }
+        }
+
+        // Verify Admin Password (You can change 'kryzex2026' to your choice)
+        function verifyAdmin() {
+            const pass = document.getElementById('admin-pass').value;
+            if(pass === 'kryzex2026') {
+                document.getElementById('admin-auth-box').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                loadAdminData();
+            } else {
+                alert("Galat Password! Only Kryzex Directors allowed.");
+            }
+        }
+
+        // Fetch all data from cloud database for Company Admin
+        async function loadAdminData() {
+            const tbody = document.getElementById('merchant-table-body');
+            tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 font-medium">Fetching live data from database...</td></tr>`;
+            
+            try {
+                const res = await fetch(`${window.location.origin}/get-all-merchants`);
+                const data = await res.json();
+                
+                tbody.innerHTML = '';
+                if(data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">No merchants onboarded yet anywhere in India.</td></tr>`;
+                    return;
+                }
+
+                data.forEach(m => {
+                    const row = `
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="p-4 font-bold text-slate-500">#${m.id}</td>
+                            <td class="p-4 font-bold text-slate-900">${m.shop_name}</td>
+                            <td class="p-4 font-medium">${m.owner_name}</td>
+                            <td class="p-4 text-slate-600">${m.mobile_number}</td>
+                            <td class="p-4 text-slate-600 max-w-xs truncate">${m.location_address}</td>
+                            <td class="p-4"><span class="px-2 py-1 bg-sky-100 text-sky-800 font-bold rounded-md text-xs">${m.onboarded_by_id}</span></td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-rose-500 font-bold">Error loading database records.</td></tr>`;
+            }
+        }
+
+        // Field Portal: Submit Merchant Data
+        async function submitData() {
+            const btn = document.getElementById('btn-submit');
+            const data = {
+                shop_name: document.getElementById('shop_name').value,
+                owner_name: document.getElementById('owner_name').value,
+                mobile_number: document.getElementById('mobile').value,
+                location_address: document.getElementById('address').value,
+                onboarded_by_id: document.getElementById('emp_id').value
+            };
+
+            if(!data.shop_name || !data.onboarded_by_id) {
+                alert("Please enter Shop Name and Employee ID!");
+                return;
+            }
+
+            btn.innerText = "Syncing with Cloud Database...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`${window.location.origin}/submit-merchant/?shop_name=${encodeURIComponent(data.shop_name)}&owner_name=${encodeURIComponent(data.owner_name)}&mobile_number=${encodeURIComponent(data.mobile_number)}&location_address=${encodeURIComponent(data.location_address)}&onboarded_by_id=${encodeURIComponent(data.onboarded_by_id)}`, {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                if(result.status === "Success") {
+                    alert("Shandar! Data synced successfully across Kryzex Network.");
+                    location.reload();
+                }
+            } catch (error) {
+                alert("Network Sync Error! Please check connection.");
+                btn.innerText = "Submit Onboarding Data";
+                btn.disabled = false;
+            }
+        }
+
+        // Auto-load Agent Performance count on Blur
+        document.getElementById('emp_id').addEventListener('blur', async (e) => {
+            const id = e.target.value;
+            if(id) {
+                try {
+                    const res = await fetch(`${window.location.origin}/employee-performance/${id}`);
+                    const stats = await res.json();
+                    document.getElementById('total_count').innerText = stats.total_shops_onboarded;
+                    document.getElementById('display_emp_id').innerText = id;
+                } catch(e) {}
+            }
+        });
+    </script>
+</body>
+</html>
