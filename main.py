@@ -62,3 +62,24 @@ def get_performance(emp_id: str, db: Session = Depends(get_db)):
 def get_all_merchants(db: Session = Depends(get_db)):
     merchants = db.query(models.Merchant).all()
     return merchants
+# 1. नया एम्प्लोयी बनाने की API (सिर्फ कंपनी एडमिन के लिए)
+@app.post("/create-employee")
+def create_employee(emp_id: str, emp_name: str, password: str, db: Session = Depends(get_db)):
+    # चेक करो कि एम्प्लोयी पहले से तो नहीं है
+    existing = db.query(models.Employee).filter(models.Employee.emp_id == emp_id).first()
+    if existing:
+        return {"status": "Error", "message": "Employee ID already exists!"}
+    
+    new_emp = models.Employee(emp_id=emp_id, emp_name=emp_name, password=password)
+    db.add(new_emp)
+    db.commit()
+    return {"status": "Success", "message": f"Employee {emp_name} created successfully!"}
+
+# 2. फील्ड एम्प्लोयी लॉगिन चेक करने की API
+@app.post("/employee-login")
+def employee_login(emp_id: str, password: str, db: Session = Depends(get_db)):
+    user = db.query(models.Employee).filter(models.Employee.emp_id == emp_id, models.Employee.password == password).first()
+    if user:
+        return {"status": "Success", "message": "Login Successful", "emp_name": user.emp_name}
+    else:
+        return {"status": "Error", "message": "Galat ID ya Password!"}

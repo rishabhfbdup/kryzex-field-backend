@@ -49,3 +49,14 @@ class Merchant(Base):
 
     # रिलेशनशिप मैपिंग
     onboarded_by = relationship("Employee", back_populates="merchants")
+    from sqlalchemy import Column, Integer, String
+
+# नई एम्प्लोयी टेबल (लॉगिन क्रेडेंशियल्स के लिए)
+
+class Employee(Base):
+    __tablename__ = "employees"
+
+    id = Column(Integer, primary key=True, index=True)
+    emp_id = Column(String, unique=True, index=True) # जैसे: KRYZ-101
+    emp_name = Column(String)
+    password = Column(String) # लॉगिन पासवर्ड
