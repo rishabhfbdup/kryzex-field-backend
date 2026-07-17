@@ -14,15 +14,15 @@ class PayoutStatusEnum(str, enum.Enum):
     PENDING = "Pending"
     PAID = "Paid"
 
-# 1. Employees Table (स्टाफ रिकॉर्ड)
+# 1. Employees Table (स्टाफ रिकॉर्ड और लॉगिन क्रेडेंशियल्स - दोनों एक साथ!)
 class Employee(Base):
     __tablename__ = "employees"
 
-    # जैसे: KRYZ-2604
-    employee_id = Column(String, primary_key=True, index=True) 
+    employee_id = Column(String, primary_key=True, index=True) # जैसे: KRYZ-2604 या KRYZ-101
     name = Column(String, nullable=False)
     role = Column(String, default="Sales Agent")
-    mobile_number = Column(String, unique=True, nullable=False)
+    mobile_number = Column(String, unique=True, nullable=True) # नए कर्मचारियों के लिए इसे optional कर दिया है
+    password = Column(String, nullable=False, default="123456") # लॉगिन पासवर्ड (डिफ़ॉल्ट 123456)
     
     # इस एम्प्लॉई ने जितने मर्चेंट जोड़े, उनकी लिस्ट यहाँ से ट्रैक होगी
     merchants = relationship("Merchant", back_populates="onboarded_by")
@@ -49,14 +49,3 @@ class Merchant(Base):
 
     # रिलेशनशिप मैपिंग
     onboarded_by = relationship("Employee", back_populates="merchants")
-    from sqlalchemy import Column, Integer, String
-
-# नई एम्प्लोयी टेबल (लॉगिन क्रेडेंशियल्स के लिए)
-
-class Employee(Base):
-    __tablename__ = "employees"
-
-    id = Column(Integer, primary_key=True, index=True)
-    emp_id = Column(String, unique=True, index=True) # जैसे: KRYZ-101
-    emp_name = Column(String)
-    password = Column(String) # लॉगिन पासवर्ड
