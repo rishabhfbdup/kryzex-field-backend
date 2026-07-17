@@ -361,28 +361,50 @@
         }
 
         async function submitData() {
-            const btn = document.getElementById('btn-submit');
-            const data = {
-                shop_name: document.getElementById('shop_name').value,
-                owner_name: document.getElementById('owner_name').value,
-                mobile_number: document.getElementById('mobile').value,
-                location_address: document.getElementById('address').value,
-                onboarded_by_id: loggedInAgentId,
-                shop_photo_url: base64Photo
-            };
-            if(!data.shop_name) { return alert("Shop name zaroori hai!"); }
-            btn.innerText = "Syncing with Kryzex Network...";
-            btn.disabled = true;
-            try {
-                const response = await fetch(`${window.location.origin}/submit-merchant/?shop_name=${encodeURIComponent(data.shop_name)}&owner_name=${encodeURIComponent(data.owner_name)}&mobile_number=${encodeURIComponent(data.mobile_number)}&location_address=${encodeURIComponent(data.location_address)}&onboarded_by_id=${encodeURIComponent(data.onboarded_by_id)}&shop_photo_url=${encodeURIComponent(data.shop_photo_url)}`, { method: 'POST' });
-                const result = await response.json();
-                if(result.status === "Success") {
-                    alert("Shandar! Merchant data uploaded successfully.");
-                    base64Photo = "";
-                    location.reload();
-                } else { alert(result.message); btn.innerText = "Submit Onboarding Data"; btn.disabled = false; }
-            } catch (error) { alert("Sync Error!"); btn.innerText = "Submit Onboarding Data"; btn.disabled = false; }
+    const btn = document.getElementById('btn-submit');
+    const data = {
+        shop_name: document.getElementById('shop_name').value.trim(),
+        owner_name: document.getElementById('owner_name').value.trim(),
+        mobile_number: document.getElementById('mobile').value.trim(),
+        location_address: document.getElementById('address').value.trim(),
+        onboarded_by_id: loggedInAgentId,
+        shop_photo_url: base64Photo
+    };
+
+    if(!data.shop_name || !data.owner_name || !data.mobile_number || !data.location_address) { 
+        return alert("Kripya sari details bhare!"); 
+    }
+    
+    btn.innerText = "Syncing with Kryzex Cloud Network...";
+    btn.disabled = true;
+
+    try {
+        // UPDATED: URL से डेटा हटाकर अब headers और body में भेजा जा रहा है
+        const response = await fetch(`${window.location.origin}/submit-merchant/`, { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        if(result.status === "Success") {
+            alert("Shandar! Merchant data uploaded for admin verification.");
+            base64Photo = "";
+            location.reload();
+        } else {
+            alert(result.message);
+            btn.innerText = "Submit Onboarding Data";
+            btn.disabled = false;
         }
+    } catch (error) {
+        alert("Sync Error: Network or Image data limit exceeded!");
+        btn.innerText = "Submit Onboarding Data";
+        btn.disabled = false;
+    }
+}
+        
     </script>
 </body>
 </html>

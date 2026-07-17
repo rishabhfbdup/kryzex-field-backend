@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import FileResponse
+from pydantic import BaseModel
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy import create_engine
 import models
@@ -20,11 +21,30 @@ def get_db():
     try: yield db
     finally: db.close()
 
+# NEW: डेटा को JSON Body में लेने के लिए Pydantic Model
+class MerchantSubmitModel(BaseModel):
+    shop_name: str
+    owner_name: str
+    mobile_number: str
+    location_address: str
+    onboarded_by_id: str
+    shop_photo_url: str = ""
+
+# UPDATED: अब यह API बड़े फोटो डेटा को बिना किसी Error के JSON Body में स्वीकार करेगी
 @app.post("/submit-merchant/")
-def submit_merchant(shop_name: str, owner_name: str, mobile_number: str, location_address: str, onboarded_by_id: str, shop_photo_url: str = "", db: Session = Depends(get_db)):
-    emp_exists = db.query(models.Employee).filter(models.Employee.employee_id == onboarded_by_id).first()
-    if not emp_exists: return {"status": "Error", "message": "Authorized Employee ID not found!"}
-    db_merchant = models.Merchant(shop_name=shop_name, owner_name=owner_name, mobile_number=mobile_number, location_address=location_address, onboarded_by_id=onboarded_by_id, shop_photo_url=shop_photo_url)
+def submit_merchant(data: MerchantSubmitModel, db: Session = Depends(get_db)):
+    emp_exists = db.query(models.Employee).filter(models.Employee.employee_id == data.onboarded_by_id).first()
+    if not emp_exists: 
+        return {"status": "Error", "message": "Authorized Employee ID not found!"}
+        
+    db_merchant = models.Merchant(
+        shop_name=data.shop_name, 
+        owner_name=data.owner_name, 
+        mobile_number=data.mobile_number, 
+        location_address=data.location_address, 
+        onboarded_by_id=data.onboarded_by_id, 
+        shop_photo_url=data.shop_photo_url
+    )
     db.add(db_merchant)
     db.commit()
     return {"status": "Success", "message": "Merchant added successfully"}
@@ -46,7 +66,6 @@ def get_performance(emp_id: str, db: Session = Depends(get_db)):
 def get_all_merchants(db: Session = Depends(get_db)):
     return db.query(models.Merchant).all()
 
-# UPDATED: रोल ऑप्शन के साथ एम्प्लोयी बनाने की API
 @app.post("/create-employee")
 def create_employee(emp_id: str, emp_name: str, password: str, role: str = "Sales Agent", db: Session = Depends(get_db)):
     existing = db.query(models.Employee).filter(models.Employee.employee_id == emp_id).first()
@@ -56,7 +75,6 @@ def create_employee(emp_id: str, emp_name: str, password: str, role: str = "Sale
     db.commit()
     return {"status": "Success", "message": f"Employee {emp_name} created successfully!"}
 
-# UPDATED: रोल भेजने के लिए लॉगिन API
 @app.post("/employee-login")
 def employee_login(emp_id: str, password: str, db: Session = Depends(get_db)):
     user = db.query(models.Employee).filter(models.Employee.employee_id == emp_id, models.Employee.password == password).first()
@@ -84,14 +102,11 @@ def update_status(merchant_id: int, status: str, db: Session = Depends(get_db)):
     db.commit()
     return {"status": "Success", "message": f"Merchant status updated to {status}!"}
 
-# NEW API: एम्प्लोयी डिलीट करने के लिए
-@delete_route := app.post("/delete-employee")
+@app.post("/delete-employee")
 def delete_employee(emp_id: str, db: Session = Depends(get_db)):
     user = db.query(models.Employee).filter(models.Employee.employee_id == emp_id).first()
     if not user: return {"status": "Error", "message": "Employee not found!"}
-    
-    # एम्प्लोयी डिलीट करने से पहले उसकी फॉरेन की एरर से बचने के लिए मर्चेंट्स भी हटा सकते हैं या नल कर सकते हैं
     db.query(models.Merchant).filter(models.Merchant.onboarded_by_id == emp_id).delete()
     db.delete(user)
     db.commit()
-    return {"status": "Success", "message": f"Employee {emp_id} and their data deleted successfully!"}
+    return {"status": "Success", "message": f"Employee {emp_id} deleted successfully!"}
