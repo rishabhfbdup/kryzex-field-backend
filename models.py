@@ -56,7 +56,7 @@ class Merchant(Base):
 class Employee(Base):
     __tablename__ = "employees"
 
-    id = Column(Integer, primary key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     emp_id = Column(String, unique=True, index=True) # जैसे: KRYZ-101
     emp_name = Column(String)
     password = Column(String) # लॉगिन पासवर्ड
